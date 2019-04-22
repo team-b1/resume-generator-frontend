@@ -1,16 +1,19 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Info from './enter-info';
+import Home from './Home';
 
 class App extends Component {
     render() {
         return (
-            <div className="App"> 
-                <header className="App-header">
-                    <h1>Resume Generator</h1>
-                    <p>Start of React App</p>
-                </header>
-            </div>
+            <Router>
+                <div className="App">
+                    <Route path="/" exact component={Home} />
+                    <Route path="/info" component={Info} />
+                </div>
+            </Router>
         );
     }
 }
