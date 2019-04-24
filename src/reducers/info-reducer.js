@@ -1,9 +1,9 @@
-import { UPDATE_FIELD } from '../actions/info-actions'
+import { UPDATE_INFO_FIELD } from '../actions/info-actions'
 
 const initialState = {
   firstName: "",
   lastName: "",
-  location: "",
+  locations: "",
   email: "",
   phoneNumber: "",
   website: "",
@@ -27,7 +27,7 @@ const initialState = {
 
 export function info(state=initialState, action) {
   switch (action.type) {
-  	case UPDATE_FIELD:
+  	case UPDATE_INFO_FIELD:
   		console.log({...state, [action.name]: action.value});
   		return {...state, [action.name]: action.value};
   	default:

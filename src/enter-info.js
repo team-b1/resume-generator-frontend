@@ -38,7 +38,7 @@ const Info = (props) => {
 			</div>
 			<div>
 				<label>
-					Location: <input name="location" type="text" value={props.location} onChange={props.onChange} />
+					Location: <input name="locations" type="text" value={props.locations} onChange={props.onChange} />
 				</label>
 			</div>
 			<div>
