@@ -1,15 +1,16 @@
-import { UPDATE_LOGIN_FIELD } from '../actions/login-actions'
+import { UPDATE_SIGNUP_FIELD } from '../actions/signup-actions'
 
 const initialState = {
   email: "",
-  password: ""
+  password: "",
+  terms: ""
   
 
 }
 
-export function login(state=initialState, action) {
+export function signup(state=initialState, action) {
   switch (action.type) {
-  	case UPDATE_LOGIN_FIELD:
+  	case UPDATE_SIGNUP_FIELD:
   		console.log({...state, [action.name]: action.value});
   		return {...state, [action.name]: action.value};
   	default:
