@@ -3,7 +3,7 @@ import { UPDATE_FIELD } from '../actions/info-actions'
 const initialState = {
   firstName: "",
   lastName: "",
-  location: "",
+  locations: "",
   email: "",
   phoneNumber: "",
   website: "",
