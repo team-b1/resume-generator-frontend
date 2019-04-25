@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
-import createSagaMiddleware from 'redux-saga'
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Info from './enter-info';
 import Home from './Home';
 import LogIn from './login';

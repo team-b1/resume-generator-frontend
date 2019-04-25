@@ -1,16 +1,16 @@
-import { createStore, applyMiddleware } from 'redux'
-import createSagaMiddleware from 'redux-saga'
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-class Home extends Component {
-    render() {
-        return(
-            <header className="Home-header">
-                <h1>Resume Generator</h1>
-                <p>Start of React App</p>     
-            </header>
-        );
-    }
-}
 
-export default Home;
+const Home = withRouter(({history}) => (
+    <div>
+        <button type='button' onClick={() => { history.push('/login') }}>
+            Login
+        </button>
+        <button type='button' onClick={() => { history.push('/signup') }}>
+            Sign Up
+        </button>
+    </div>
+));
+
+export default Home

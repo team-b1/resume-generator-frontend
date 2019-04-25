@@ -2,9 +2,9 @@
   "homepage": "https://team-b1.github.io/resume-generator-frontend",
   "name": "resume-generator-frontend",
   "version": "0.1.0",
-  
   "private": true,
   "dependencies": {
+    "firebase": "^5.9.3",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-redux": "^7.0.2",
