@@ -1,11 +1,11 @@
 {
-  "main.js": "/resume-generator-frontend/static/js/main.ce499cdd.chunk.js",
-  "main.js.map": "/resume-generator-frontend/static/js/main.ce499cdd.chunk.js.map",
+  "main.js": "/resume-generator-frontend/static/js/main.304428c5.chunk.js",
+  "main.js.map": "/resume-generator-frontend/static/js/main.304428c5.chunk.js.map",
   "runtime~main.js": "/resume-generator-frontend/static/js/runtime~main.9541a1b2.js",
   "runtime~main.js.map": "/resume-generator-frontend/static/js/runtime~main.9541a1b2.js.map",
-  "static/js/2.dcee5dbc.chunk.js": "/resume-generator-frontend/static/js/2.dcee5dbc.chunk.js",
-  "static/js/2.dcee5dbc.chunk.js.map": "/resume-generator-frontend/static/js/2.dcee5dbc.chunk.js.map",
+  "static/js/2.ae4264c6.chunk.js": "/resume-generator-frontend/static/js/2.ae4264c6.chunk.js",
+  "static/js/2.ae4264c6.chunk.js.map": "/resume-generator-frontend/static/js/2.ae4264c6.chunk.js.map",
   "index.html": "/resume-generator-frontend/index.html",
-  "precache-manifest.de08884c15c17d0f45e869fff0bded54.js": "/resume-generator-frontend/precache-manifest.de08884c15c17d0f45e869fff0bded54.js",
+  "precache-manifest.8475153234177ea181c31bc3096329c0.js": "/resume-generator-frontend/precache-manifest.8475153234177ea181c31bc3096329c0.js",
   "service-worker.js": "/resume-generator-frontend/service-worker.js"
 }
