@@ -4,7 +4,8 @@ import firebase from '../firebase';
 const initialState = {
     email: "",
     password: "",
-    failed: false
+    failed: false,
+    error: ""
 }
 
 export function login(state=initialState, action) {
@@ -19,7 +20,7 @@ export function login(state=initialState, action) {
             return { ...state, failed: false };
         case LOGIN_FAIL:
             console.log('Login Fail');
-            return { ...state, failed: true };
+            return { email: "", password: "", failed: true, error: action.error};
         default:
             return state;
     }

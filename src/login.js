@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
     return {
-        ...state
+        ...state.login
     }
 }
 
@@ -24,15 +24,16 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const LogIn = withRouter((props) => {
+    console.log(props);
     return (
         <form autocomplete="on">
             <div>
                 <h2> Log In </h2>
             </div>
-            {props.failed &&
-                <div>
-                    Failed to Login
-                </div>
+            { props.failed &&
+                <h1>
+                    Failed to Login: {props.error.message}
+                </h1>
             }
             <div>
                 <label>
