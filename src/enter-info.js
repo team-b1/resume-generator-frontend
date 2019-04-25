@@ -1,137 +1,187 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import React, { Component } from 'react';
-import { create_update_field } from './actions/info-actions';
+import { create_update_field, create_add_education, create_remove_education, create_update_education, create_add_work, create_remove_work, create_update_work, create_push_user } from './actions/info-actions';
 import { connect } from 'react-redux'
 
+import { withRouter } from 'react-router-dom';
+import firebase from './firebase';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = (state) => {
-	return {
-		...state
-	}
+    console.log(state.info);
+    return {
+        ...state.info
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		onChange: (event) => {
-			dispatch(create_update_field(event.target.name, event.target.value))
-		}
-	}
+    return {
+        onChange: (event) => {
+            dispatch(create_update_field(event.target.name, event.target.value))
+        },
+        addEducation: () => {
+            dispatch(create_add_education());
+        },
+        removeEducation: id => {
+            dispatch(create_remove_education(id));
+        },
+        updateEducation: (id, event) => {
+            dispatch(create_update_education(id, event.target.name, event.target.value));
+        },
+        addWork: () => {
+            dispatch(create_add_work());
+        },
+        removeWork: id => {
+            dispatch(create_remove_work(id));
+        },
+        updateWork: (id, event) => {
+            dispatch(create_update_work(id, event.target.name, event.target.value));
+        },
+        pushUserData: () => {
+            dispatch(create_push_user());
+        }
+    }
 }
 
-const Info = (props) => {
-	return (
-		<form autocomplete="on">
-			<div>
-				<h2> Personal </h2>
-			</div>
+const styles = theme => ({
+    grow: {
+        flexGrow: 1
+    },
+    paper: {
+        flexGrow: 1,
+        marginTop: theme.spacing.unit * 5,
+        margin: 'auto',
+        padding: theme.spacing.unit * 2
+    }
+});
 
-			<div>
-				<label>
-					First Name*: <input name="firstName" type="text" value={props.firstName} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Last Name*: <input name="lastName" type="text" value={props.lastName} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Location: <input name="locations" type="text" value={props.locations} onChange={props.onChange} />
-				</label>
-			</div>
-			<div>
-				<label>
-					Email*: <input name="email" type="email" value={props.email} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Phone Number: <input name="phoneNumber" type="tel" value={props.phoneNumber} onChange={props.onChange} />
-				</label>
-			</div>
-			<div>
-				<label>
-					Website: <input name="website" type="url" value={props.website} onChange={props.onChange} />
-				</label>
-			</div>
+const Info = withRouter(({classes, history, ...props}) => {
+    if (props.pushed) history.push('/user');
+    if (!firebase.auth().currentUser) history.push('/login');
+    return (
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        Resume Generator
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <form autocomplete="on" className={classes.grow}>
+                <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                    <Grid item xs={12}>
+                        <h2> Personal </h2>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="First Name" name="firstName" type="text" value={props.firstName} onChange={props.onChange} required/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Last Name" name="lastName" type="text" value={props.lastName} onChange={props.onChange} required/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Location" name="locations" type="text" value={props.locations} onChange={props.onChange} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Email" name="email" type="email" value={props.email} onChange={props.onChange} required/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Phone Number" name="phoneNumber" value={props.phoneNumber} onChange={props.onChange} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Website" name="website" value={props.website} onChange={props.onChange} />
+                    </Grid>
 
-			<div>
-				<h2> Education </h2>
-			</div>
+                    <h2> Education </h2>
+                    {props.education.map((school, index) => {
+                        return (
+                            <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Name" name="school" type="text" value={school.school} onChange={(event) => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Degree" name="degree" type="text" value={school.degree} onChange={(event) => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Major" name="major" type="text" value={school.major} onChange={(event) => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Minor" name="minor" type="text" value={school.minor} onChange={(event) => props.updateEducation(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Start Date" name="start" type="text" value={school.start} onChange={event => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="End Date" name="end" type="text" value={school.end} onChange={event => props.updateEducation(index, event)} />
+                                </Grid>
 
-			<div>
-				<label>
-					School*: <input name="school" type="text" value={props.school} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Degree*: <input name="degree" type="text" value={props.degree} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Major*: <input name="major" type="text" value={props.major} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Minor: <input name="minor" type="text" value={props.minor} onChange={props.onChange} />
-				</label>
-			</div>
-			<div>
-				<label>
-					GPA: <input name="gpa" type="number" value={props.gpa} onChange={props.onChange} />
-				</label>
-			</div>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="GPA" name="gpa" type="number" value={school.gpa} onChange={(event) => props.updateEducation(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant='contained' color='secondary' onClick={() => props.removeEducation(index)}>
+                                        Remove Education
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        );
+                    })}
+                    <Grid item xs={12}>
+                        <Button variant='contained' color='primary' onClick={props.addEducation}>
+                            Add Education
+                        </Button>
+                    </Grid>
+                    <h2> Experience </h2>
+                    {props.work.map((work, index) => {
+                        return (
+                            <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Company" name="company" type="text" value={work.company} onChange={event => props.updateWork(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Company Location" name="companyLocation" type="text" value={work.companyLocation} onChange={event => props.updateWork(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Position" name="position" type="text" value={work.position} onChange={event => props.updateWork(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Start Date" name="start" type="text" value={work.start} onChange={event => props.updateWork(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="End Date" name="end" type="text" value={work.end} onChange={event => props.updateWork(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Description" name="description" type="textarea" multiline={true} value={work.description} onChange={event => props.updateWork(index, event)}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant='contained' color='secondary' onClick={() => props.removeWork(index)}>
+                                        Remove Work
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        );
+                    })}
+                <Grid item xs={12}>
+                    <Button variant='contained' color='primary' onClick={props.addWork}>
+                        Add Work
+                    </Button>
+                </Grid>
 
-			<div>
-				<h2> Experience </h2>
-			</div>
+                <Grid item xs={12}>
+                    <Button variant='contained'  onClick={props.pushUserData}>
+                        Update Data
+                    </Button>
+                </Grid>
+                </Grid>
+            </form>
+        </div>
+    );
+})
 
-			<div>
-				<label>
-					Company*: <input name="company" type="text" value={props.company} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Location: <input name="companyLocation" type="text" value={props.companyLocation} onChange={props.onChange} />
-				</label>
-			</div>
-			<div>
-				<label>
-					Position*: <input name="position" type="text" value={props.position} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Start Month*: <input name="startMonth" type="month" value={props.startMonth} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Current Position: <input name="currentPosition" type="checkbox" value={props.currentPosition} onChange={props.onChange} />
-				</label>
-			</div>
-			<div>
-				<label>
-					End Month: <input name="endMonth" type="text" value={props.endMonth} onChange={props.onChange} />
-				</label>
-			</div>
-			<div>
-				<label>
-					Description: <textarea rows="4" cols="50" name="description" value={props.description} onChange={props.onChange} />
-				</label>
-			</div>
-
-			<div>
-				<input type="submit" />
-			</div>
-		</form>
-	);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Info);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Info));

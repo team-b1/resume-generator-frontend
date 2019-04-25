@@ -3,51 +3,89 @@ import createSagaMiddleware from 'redux-saga'
 import React, { Component } from 'react';
 import { create_update_field } from './actions/signup-actions';
 import { connect } from 'react-redux'
-
+import { withRouter } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
 const mapStateToProps = (state) => {
-	return {
-		...state
-	}
+    return {
+        ...state
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		onChange: (event) => {
-			dispatch(create_update_field(event.target.name, event.target.value))
-		}
-	}
+    return {
+        onChange: (event) => {
+            dispatch(create_update_field(event.target.name, event.target.value))
+        }
+    }
 }
 
-const SignUp = (props) => {
-	return (
-		<form autocomplete="on">
-			<div>
-				<h2> Sign Up </h2>
-			</div>
+const styles = theme => ({
+    grow: {
+        flexGrow: 1
+    },
+    paper: {
+        flexGrow: 1,
+        marginTop: theme.spacing.unit * 5,
+        margin: 'auto',
+        padding: theme.spacing.unit * 2
+    }
+});
 
-			<div>
-				<label>
-					Email: <input name="email" type="email" value={props.email} onChange={props.onChange} required/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Password: <input name="password" type="password" value={props.password} onChange={props.onChange} required/>
-				</label>
-			</div>
+const SignUp = withRouter(({classes, history, ...props}) => {
+    return (
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        Resume Generator
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            { props.failed &&
+                <h1>
+                    Failed to Login: {props.error.message}
+                </h1>
+            }
+            <form autocomplete="on">
+                <Paper className={classes.paper}>
+                    <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                        <Grid item xs={6}>
+                            <TextField
+                                name="email"
+                                label="Email"
+                                margin="normal"
+                                value={props.email}
+                                onChange={props.onChange}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                name="password"
+                                label="Password"
+                                margin="normal"
+                                type="password"
+                                value={props.password}
+                                onChange={props.onChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant='contained' color='primary' onClick={() => history.push('/login')}>
+                                Sign Up
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </form>
+        </div>
+    );
+});
 
-			<div>
-				<label>
-					<input name="terms" type="checkbox" value={props.terms} onChange={props.onChange} required /> I have read and agree to the Term of Service and Private Policy
-				</label>
-			</div>
-
-			<div>
-				<input type="submit" />
-			</div>
-		</form>
-	);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(SignUp));

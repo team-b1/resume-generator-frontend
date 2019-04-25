@@ -14,6 +14,5 @@ export function create_update_field(name, value) {
 export function create_login_action(history) {
     return {
         type: LOGIN,
-        history
     }
 }
