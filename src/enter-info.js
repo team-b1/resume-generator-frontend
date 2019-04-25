@@ -14,7 +14,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onChange: (event) => {
-			dispatch(create_update_field(event.target.name, event.target.value))
+			if (event.target.type === "checkbox") {
+				dispatch(create_update_field(event.target.name, event.target.checked))
+			}
+			else {
+				dispatch(create_update_field(event.target.name, event.target.value));
+			}
 		}
 	}
 }
@@ -113,7 +118,7 @@ const Info = (props) => {
 			</div>
 			<div>
 				<label>
-					Current Position: <input name="currentPosition" type="checkbox" value={props.currentPosition} onChange={props.onChange} />
+					Current Position: <input name="currentPosition" type="checkbox" checked={props.currentPosition} onChange={props.onChange} />
 				</label>
 			</div>
 			<div>
