@@ -6,6 +6,13 @@ import { connect } from 'react-redux'
 
 import { withRouter } from 'react-router-dom';
 import firebase from './firebase';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = (state) => {
     console.log(state.info);
@@ -43,129 +50,138 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const Info = withRouter(({history, ...props}) => {
+const styles = theme => ({
+    grow: {
+        flexGrow: 1
+    },
+    paper: {
+        flexGrow: 1,
+        marginTop: theme.spacing.unit * 5,
+        margin: 'auto',
+        padding: theme.spacing.unit * 2
+    }
+});
+
+const Info = withRouter(({classes, history, ...props}) => {
     if (props.pushed) history.push('/user');
     if (!firebase.auth().currentUser) history.push('/login');
     return (
-        <form autocomplete="on">
-            <div>
-                <h2> Personal </h2>
-            </div>
-
-            <div>
-                <label>
-                    First Name*: <input name="firstName" type="text" value={props.firstName} onChange={props.onChange} required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Last Name*: <input name="lastName" type="text" value={props.lastName} onChange={props.onChange} required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Location: <input name="locations" type="text" value={props.locations} onChange={props.onChange} />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Email*: <input name="email" type="email" value={props.email} onChange={props.onChange} required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Phone Number: <input name="phoneNumber" value={props.phoneNumber} onChange={props.onChange} />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Website: <input name="website" value={props.website} onChange={props.onChange} />
-                </label>
-            </div>
-
-            <div>
-                <h2> Education </h2>
-                {props.education.map((school, index) => {
-                    return (
-                        <div key={index}>
-                            <div>
-                                <label>
-                                    School*: <input name="school" type="text" value={school.school} onChange={(event) => props.updateEducation(index, event)} required/>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Degree*: <input name="degree" type="text" value={school.degree} onChange={(event) => props.updateEducation(index, event)} required/>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Major*: <input name="major" type="text" value={school.major} onChange={(event) => props.updateEducation(index, event)} required/>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Minor: <input name="minor" type="text" value={school.minor} onChange={(event) => props.updateEducation(index, event)} />
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    GPA: <input name="gpa" type="number" value={school.gpa} onChange={(event) => props.updateEducation(index, event)} />
-                                </label>
-                            </div>
-                            <input type='button' value='Remove Education' onClick={() => props.removeEducation(index)}/>
-                        </div>
-                    );
-                })}
-                <input type='button' value='Add Education' onClick={props.addEducation}/>
-            </div>
-            <div>
-                <h2> Experience </h2>
-                {props.work.map((work, index) => {
-                    return (
-                        <div key={index}>
-                            <div>
-                                <label>
-                                    Company*: <input name="company" type="text" value={work.company} onChange={event => props.updateWork(index, event)} required/>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Location: <input name="companyLocation" type="text" value={work.companyLocation} onChange={event => props.updateWork(index, event)} />
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Position*: <input name="position" type="text" value={work.position} onChange={event => props.updateWork(index, event)} required/>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Start Month*: <input name="startMonth" type="text" value={work.start} onChange={event => props.updateWork(index, event)} required/>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    Current Position: <input name="currentPosition" type="checkbox" value={work.currentPosition} onChange={event => props.updateWork(index, event)} />
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    End Month: <input name="endMonth" type="text" value={work.end} onChange={event => props.updateWork(index, event)} />
-                                </label>
-                            </div>
-                            <input type='button' value='Remove Work' onClick={() => props.removeWork(index)}/>
-                        </div>
-                    );
-                })}
-            <input type='button' value='Add Work' onClick={props.addWork}/>
-        </div>
-
         <div>
-            <input onClick={props.pushUserData} value="Update Info" type="button"/>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        Resume Generator
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <form autocomplete="on" className={classes.grow}>
+                <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                    <Grid item xs={12}>
+                        <h2> Personal </h2>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="First Name" name="firstName" type="text" value={props.firstName} onChange={props.onChange} required/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Last Name" name="lastName" type="text" value={props.lastName} onChange={props.onChange} required/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Location" name="locations" type="text" value={props.locations} onChange={props.onChange} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Email" name="email" type="email" value={props.email} onChange={props.onChange} required/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Phone Number" name="phoneNumber" value={props.phoneNumber} onChange={props.onChange} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth label="Website" name="website" value={props.website} onChange={props.onChange} />
+                    </Grid>
+
+                    <h2> Education </h2>
+                    {props.education.map((school, index) => {
+                        return (
+                            <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Name" name="school" type="text" value={school.school} onChange={(event) => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Degree" name="degree" type="text" value={school.degree} onChange={(event) => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Major" name="major" type="text" value={school.major} onChange={(event) => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Minor" name="minor" type="text" value={school.minor} onChange={(event) => props.updateEducation(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Start Date" name="start" type="text" value={school.start} onChange={event => props.updateEducation(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="End Date" name="end" type="text" value={school.end} onChange={event => props.updateEducation(index, event)} />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="GPA" name="gpa" type="number" value={school.gpa} onChange={(event) => props.updateEducation(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant='contained' color='secondary' onClick={() => props.removeEducation(index)}>
+                                        Remove Education
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        );
+                    })}
+                    <Grid item xs={12}>
+                        <Button variant='contained' color='primary' onClick={props.addEducation}>
+                            Add Education
+                        </Button>
+                    </Grid>
+                    <h2> Experience </h2>
+                    {props.work.map((work, index) => {
+                        return (
+                            <Grid container spacing={0} justify='center' direction='column' alignItems="center">
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Company" name="company" type="text" value={work.company} onChange={event => props.updateWork(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Company Location" name="companyLocation" type="text" value={work.companyLocation} onChange={event => props.updateWork(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Position" name="position" type="text" value={work.position} onChange={event => props.updateWork(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Start Date" name="start" type="text" value={work.start} onChange={event => props.updateWork(index, event)} required/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="End Date" name="end" type="text" value={work.end} onChange={event => props.updateWork(index, event)} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField fullWidth label="Description" name="description" type="textarea" multiline={true} value={work.description} onChange={event => props.updateWork(index, event)}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant='contained' color='secondary' onClick={() => props.removeWork(index)}>
+                                        Remove Work
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        );
+                    })}
+                <Grid item xs={12}>
+                    <Button variant='contained' color='primary' onClick={props.addWork}>
+                        Add Work
+                    </Button>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Button variant='contained'  onClick={props.pushUserData}>
+                        Update Data
+                    </Button>
+                </Grid>
+                </Grid>
+            </form>
         </div>
-        </form>
     );
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Info);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Info));

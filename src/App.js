@@ -6,6 +6,7 @@ import Home from './Home';
 import LogIn from './login';
 import SignUp from './signup';
 import UserPage from './userpage';
+import GenerateResume from './generate-resume';
 
 class App extends Component {
     render() {
@@ -17,6 +18,7 @@ class App extends Component {
                     <Route path="/login" component={LogIn} />
                     <Route path="/info" component={Info} />
                     <Route path="/user" component={UserPage} />
+                    <Route path="/generate" component={GenerateResume} />
                 </div>
             </Router>
         );

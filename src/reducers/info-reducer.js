@@ -4,9 +4,10 @@ const workTemplate = {
     company: "",
     companyLocation: "",
     curPosition: false,
-    start: "Jun 2018",
-    end: "Aug 2018",
-    position: "TAP Summer Intern"
+    start: "",
+    end: "",
+    position: "",
+    description: ""
 }
 
 const educationTemplate = {
@@ -14,6 +15,8 @@ const educationTemplate = {
     degree: "",
     major: "",
     minor: "",
+    start: "",
+    end: "",
     gpa: ""
 }
 
