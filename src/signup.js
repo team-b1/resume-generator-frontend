@@ -14,7 +14,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onChange: (event) => {
-			dispatch(create_update_field(event.target.name, event.target.value))
+			if (event.target.type === "checkbox") {
+				dispatch(create_update_field(event.target.name, event.target.checked))
+			}
+			else {
+				dispatch(create_update_field(event.target.name, event.target.value));
+			}
 		}
 	}
 }
@@ -39,7 +44,7 @@ const SignUp = (props) => {
 
 			<div>
 				<label>
-					<input name="terms" type="checkbox" value={props.terms} onChange={props.onChange} required /> I have read and agree to the Term of Service and Private Policy
+					<input name="terms" type="checkbox" checked={props.terms} onChange={props.onChange} required /> I have read and agree to the Term of Service and Private Policy
 				</label>
 			</div>
 
