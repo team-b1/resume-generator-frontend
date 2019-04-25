@@ -17,14 +17,15 @@ const mapDispatchToProps = (dispatch) => {
         onChange: (event) => {
             dispatch(create_update_field(event.target.name, event.target.value))
         },
-        login: history => {
-            dispatch(create_login_action(history))
+        login: () => {
+            dispatch(create_login_action())
         }
     }
 }
 
 const LogIn = withRouter((props) => {
     console.log(props);
+    if (props.success) props.history.push('/user');
     return (
         <form autocomplete="on">
             <div>
@@ -47,7 +48,7 @@ const LogIn = withRouter((props) => {
             </div>
 
             <div>
-                <input onClick={() => props.login(props.history)} type='button' value='Login'/>
+                <input onClick={props.login} type='button' value='Login'/>
             </div>
         </form>
     );

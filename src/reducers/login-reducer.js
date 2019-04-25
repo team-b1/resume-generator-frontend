@@ -5,6 +5,7 @@ const initialState = {
     email: "",
     password: "",
     failed: false,
+    success: false,
     error: ""
 }
 
@@ -15,9 +16,7 @@ export function login(state=initialState, action) {
             return {...state, [action.name]: action.value};
         case LOGIN_SUCCESS:
             console.log('Login Succeeded');
-            console.log(firebase.auth().currentUser);
-            action.history.push('/');
-            return { ...state, failed: false };
+            return { ...state, success: true, failed: false };
         case LOGIN_FAIL:
             console.log('Login Fail');
             return { email: "", password: "", failed: true, error: action.error};
