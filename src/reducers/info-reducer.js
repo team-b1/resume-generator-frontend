@@ -32,6 +32,10 @@ const initialState = {
     work: []
 }
 
+const validateData = () => {
+
+}
+
 export function info(state=initialState, action) {
     const education = state.education;
     const work = state.work;

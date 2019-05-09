@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { SnackbarProvider, withSnackbar } from 'notistack';
 
 const mapStateToProps = (state) => {
     console.log(state.info);
@@ -21,7 +22,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const thresholds =
+    { 'description': 250
+    }
+
+const mapDispatchToProps = (dispatch, props) => {
     return {
         onChange: (event) => {
             dispatch(create_update_field(event.target.name, event.target.value))
@@ -42,6 +47,10 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(create_remove_work(id));
         },
         updateWork: (id, event) => {
+            if (thresholds[event.target.name] && event.target.value.length > thresholds[event.target.name]) {
+                console.log(props);
+                props.enqueueSnackbar('"' + event.target.name + '"' + ' might be a little too long! Consider shortening it.', { variant: 'warning' } );
+            }
             dispatch(create_update_work(id, event.target.name, event.target.value));
         },
         pushUserData: () => {
@@ -81,20 +90,10 @@ const Info = withRouter(({classes, history, ...props}) => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth label="First Name" name="firstName" type="text" value={props.firstName} onChange={props.onChange} required/>
-                    </Grid>
-                    <Grid item xs={12}>
                         <TextField fullWidth label="Last Name" name="lastName" type="text" value={props.lastName} onChange={props.onChange} required/>
-                    </Grid>
-                    <Grid item xs={12}>
                         <TextField fullWidth label="Location" name="locations" type="text" value={props.locations} onChange={props.onChange} />
-                    </Grid>
-                    <Grid item xs={12}>
                         <TextField fullWidth label="Email" name="email" type="email" value={props.email} onChange={props.onChange} required/>
-                    </Grid>
-                    <Grid item xs={12}>
                         <TextField fullWidth label="Phone Number" name="phoneNumber" value={props.phoneNumber} onChange={props.onChange} />
-                    </Grid>
-                    <Grid item xs={12}>
                         <TextField fullWidth label="Website" name="website" value={props.website} onChange={props.onChange} />
                     </Grid>
 
@@ -104,27 +103,12 @@ const Info = withRouter(({classes, history, ...props}) => {
                             <Grid container spacing={0} justify='center' direction='column' alignItems="center">
                                 <Grid item xs={12}>
                                     <TextField fullWidth label="Name" name="school" type="text" value={school.school} onChange={(event) => props.updateEducation(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Degree" name="degree" type="text" value={school.degree} onChange={(event) => props.updateEducation(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Major" name="major" type="text" value={school.major} onChange={(event) => props.updateEducation(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Minor" name="minor" type="text" value={school.minor} onChange={(event) => props.updateEducation(index, event)} />
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Start Date" name="start" type="text" value={school.start} onChange={event => props.updateEducation(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="End Date" name="end" type="text" value={school.end} onChange={event => props.updateEducation(index, event)} />
-                                </Grid>
-
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="GPA" name="gpa" type="number" value={school.gpa} onChange={(event) => props.updateEducation(index, event)} />
-                                </Grid>
-                                <Grid item xs={12}>
                                     <Button variant='contained' color='secondary' onClick={() => props.removeEducation(index)}>
                                         Remove Education
                                     </Button>
@@ -143,23 +127,11 @@ const Info = withRouter(({classes, history, ...props}) => {
                             <Grid container spacing={0} justify='center' direction='column' alignItems="center">
                                 <Grid item xs={12}>
                                     <TextField fullWidth label="Company" name="company" type="text" value={work.company} onChange={event => props.updateWork(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Company Location" name="companyLocation" type="text" value={work.companyLocation} onChange={event => props.updateWork(index, event)} />
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Position" name="position" type="text" value={work.position} onChange={event => props.updateWork(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Start Date" name="start" type="text" value={work.start} onChange={event => props.updateWork(index, event)} required/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="End Date" name="end" type="text" value={work.end} onChange={event => props.updateWork(index, event)} />
-                                </Grid>
-                                <Grid item xs={12}>
                                     <TextField fullWidth label="Description" name="description" type="textarea" multiline={true} value={work.description} onChange={event => props.updateWork(index, event)}/>
-                                </Grid>
-                                <Grid item xs={12}>
                                     <Button variant='contained' color='secondary' onClick={() => props.removeWork(index)}>
                                         Remove Work
                                     </Button>
@@ -184,4 +156,4 @@ const Info = withRouter(({classes, history, ...props}) => {
     );
 })
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Info));
+export default withStyles(styles)(withSnackbar(connect(mapStateToProps, mapDispatchToProps)(Info)));

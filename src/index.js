@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 
 import App from './App';
+import { SnackbarProvider } from 'notistack';
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -18,8 +19,10 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
+    <SnackbarProvider maxSnack={3}>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </SnackbarProvider>,
 	document.getElementById('root')
 );
